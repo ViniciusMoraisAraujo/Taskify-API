@@ -1,4 +1,6 @@
-﻿namespace TaskifyAPI.Models;
+﻿using TaskifyAPI.Enums;
+
+namespace TaskifyAPI.Models;
 
 public class User
 {
@@ -6,7 +8,7 @@ public class User
     public string UserName { get; set; }
     public string Email { get; set; }
     public byte[] PasswordHash  { get; set; }
-    public ICollection<TaskItem> TaskItem { get; set; } = new ICollection<TaskItem>();
-    public UserRole Role { get; set; } = User;
+    public List<TaskItem> TaskItem { get; set; } = new List<TaskItem>();
+    public UserRole Role { get; set; } = UserRole.User;
     public DateTime CreateAt { get; set; } = DateTime.Now;
 }

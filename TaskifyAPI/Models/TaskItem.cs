@@ -1,4 +1,6 @@
-﻿namespace TaskifyAPI.Models;
+﻿using TaskifyAPI.Enums;
+
+namespace TaskifyAPI.Models;
 
 public class TaskItem
 {
@@ -8,5 +10,5 @@ public class TaskItem
     public DateTime CreateAt { get; set; } = DateTime.Now;
     public DateTime? CompleteDate { get; set; }
     public User User { get; set; }
-    public TaskStatus Status { get; set; } = Pending;
+    public StatusTask Status { get; set; } = StatusTask.Pending;
 }
