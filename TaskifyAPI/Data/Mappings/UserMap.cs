@@ -30,7 +30,8 @@ public class UserMap : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.PasswordHash)
             .IsRequired()
-            .HasColumnName("PasswordHash");
+            .HasColumnName("PasswordHash")
+            .HasColumnType("NVARCHAR(160)");
 
         builder.Property(x => x.Role)
             .HasColumnName("Role")
