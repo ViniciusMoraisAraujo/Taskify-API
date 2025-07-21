@@ -2,18 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskifyAPI.Data;
 using TaskifyAPI.Dtos;
-using TaskifyAPI.Models;
 
 namespace TaskifyAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class AccountController
+public class AccountController : ControllerBase
 {
     private readonly TaskyfyDataContext _context;
 
     AccountController(TaskyfyDataContext context)
     {
         _context = context;
+    }
+
+    [HttpPost("v1/register")]
+    public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterDto userRegisterDto)
+    {
+        return Ok(await RegisterAsync(userRegisterDto));
     }
 }
