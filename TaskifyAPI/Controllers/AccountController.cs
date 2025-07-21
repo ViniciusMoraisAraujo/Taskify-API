@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskifyAPI.Data;
 using TaskifyAPI.Dtos;
@@ -14,7 +13,7 @@ public class AccountController : ControllerBase
     private readonly TaskyfyDataContext _context;
     private readonly IPasswordHasher _passwordHasher;
 
-    AccountController(TaskyfyDataContext context, IPasswordHasher passwordHasher)
+    public AccountController(TaskyfyDataContext context, IPasswordHasher passwordHasher)
     {
         _context = context;
         _passwordHasher = passwordHasher;
@@ -23,7 +22,7 @@ public class AccountController : ControllerBase
     [HttpPost("v1/register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
     {
-        var hashedPassword = _passwordHasher.HashPassword(userRegisterDto.PasswordHash);
+        var hashedPassword = _passwordHasher.HashPassword(userRegisterDto.Password);
         var user = new User
         {
             UserName = userRegisterDto.UserName,
@@ -47,10 +46,17 @@ public class AccountController : ControllerBase
         if (user == null)
             return Unauthorized();
         
-        var hashedPassword = _passwordHasher.VerifyHashedPassword(userLoginDto.PasswordHash, userLoginDto.PasswordHash);
+        var hashedPassword = _passwordHasher.VerifyHashedPassword(userLoginDto.PasswordHash, user.PasswordHash);
         if (!hashedPassword)
             return Unauthorized();
         
         return Ok(user);
+    }
+
+    [HttpGet("v1/get")]
+    public async Task<IActionResult> Get()
+    {
+        var list = _context.Users.AsNoTracking().ToList();
+        return Ok(list);
     }
 }

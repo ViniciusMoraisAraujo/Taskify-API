@@ -18,9 +18,9 @@ public class UserRegisterDtoValidator : AbstractValidator<UserRegisterDto>
             .MaximumLength(255).WithMessage("Email is too long")
             .MinimumLength(3).WithMessage("Email is too short");
 
-        RuleFor(x => x.PasswordHash)
+        RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
-            .MinimumLength(3).WithMessage("Password must not exceed 3 characters")
+            .MinimumLength(3).WithMessage("Password must be at least 3 characters")
             .Matches("[A-Z]").WithMessage("The password should contain at least 1 uppercase character")
             .Matches("[a-z]").WithMessage("The password should contain at least 1 lowercase character")
             .Matches("[0-9]").WithMessage("The password should contain 1 number")
