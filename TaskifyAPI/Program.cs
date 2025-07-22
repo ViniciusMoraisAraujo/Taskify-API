@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskifyAPI.Data;
+using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.Services;
-using TaskifyAPI.Services.Interfaces;
+using TaskifyAPI.Services.PasswordHasher;
 using TaskifyAPI.Services.TokenService;
+using TaskifyAPI.Services.UserService;
 using TaskifyAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +44,11 @@ void ConfigureServices(WebApplicationBuilder applicationBuilder)
     applicationBuilder.Services.AddEndpointsApiExplorer();
     applicationBuilder.Services.AddSwaggerGen();//add Swagger
     
-    applicationBuilder.Services.AddScoped<IPasswordHasher, PasswordHasher>();//add hasher for password
+    applicationBuilder.Services.AddScoped<IPasswordHasher, PasswordHasher>();//add dependency for password hash
+    applicationBuilder.Services.AddScoped<ITokenService, TokenService>();//add dependency for token service
+    applicationBuilder.Services.AddScoped<IUserRepository, UserRepository>();//add dependency for user repository
+    applicationBuilder.Services.AddScoped<IUserService, UserService>();//add dependency for user service
+
 }
 
 void ConfigureAuth(WebApplicationBuilder applicationBuilder)

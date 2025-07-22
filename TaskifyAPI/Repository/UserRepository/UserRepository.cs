@@ -13,11 +13,12 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
+
     public async Task<bool> ExistsByEmailAsync(string email)
     {
-        return await _context.Users.AnyAsync(x => x.Email == email);
+        return await _context.Users.AnyAsync(u => u.Email == email);
     }
-    
+
     public async Task CreateUserAsync(User user)
     {
         await _context.Users.AddAsync(user);

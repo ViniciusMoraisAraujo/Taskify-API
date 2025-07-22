@@ -14,4 +14,8 @@ public class RegisterViewModel
         Email = email;
     }
 
+    public RegisterViewModel()
+    {
+        
+    }
 }

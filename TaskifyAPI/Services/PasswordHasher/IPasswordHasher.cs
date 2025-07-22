@@ -1,4 +1,4 @@
-﻿namespace TaskifyAPI.Services.Interfaces;
+﻿namespace TaskifyAPI.Services.PasswordHasher;
 
 public interface IPasswordHasher
 {

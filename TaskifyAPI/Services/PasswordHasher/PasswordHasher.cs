@@ -1,8 +1,6 @@
 ﻿using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
-using TaskifyAPI.Services.Interfaces;
 
-namespace TaskifyAPI.Services;
+namespace TaskifyAPI.Services.PasswordHasher;
 
 public class PasswordHasher : IPasswordHasher
 {
