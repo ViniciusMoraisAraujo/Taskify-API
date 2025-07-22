@@ -12,7 +12,7 @@ public class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Email is invalid");
 
-        RuleFor(x => x.PasswordHash)
+        RuleFor(x => x.Password)
             .NotEmpty().WithMessage("PasswordHash is required");
         
     }

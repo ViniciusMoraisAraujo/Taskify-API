@@ -4,6 +4,8 @@ using TaskifyAPI.Data;
 using TaskifyAPI.Dtos;
 using TaskifyAPI.Models;
 using TaskifyAPI.Services.Interfaces;
+using TaskifyAPI.ViewModels;
+using TaskifyAPI.ViewModels.Accounts;
 
 namespace TaskifyAPI.Controllers;
 
@@ -19,7 +21,7 @@ public class AccountController : ControllerBase
         _passwordHasher = passwordHasher;
     }
 
-    [HttpPost("v1/register")]
+    [HttpPost("v1/account/register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegisterDto)
     {
         var hashedPassword = _passwordHasher.HashPassword(userRegisterDto.Password);
@@ -29,34 +31,29 @@ public class AccountController : ControllerBase
             Email = userRegisterDto.Email,
             PasswordHash = hashedPassword
         };
-        bool verification = _context.Users.Any(u => u.Email == userRegisterDto.Email);
+        var verification = _context.Users.Any(u => u.Email == userRegisterDto.Email);
         if (verification)
             return BadRequest("Email already exists");
         
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
+        
+        var userResult = new RegisterViewModel(user.Id, user.UserName, user.Email, user.CreateAt);
 
-        return Ok(userRegisterDto);
+        return Ok(new ResultViewModel<RegisterViewModel>(true, "User Created!", userResult));
     }
 
-    [HttpPost("v1/login")]
+    [HttpPost("v1/account/login")]
     public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
     {
         var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
         if (user == null)
             return Unauthorized();
         
-        var hashedPassword = _passwordHasher.VerifyHashedPassword(userLoginDto.PasswordHash, user.PasswordHash);
+        var hashedPassword = _passwordHasher.VerifyHashedPassword(userLoginDto.Password, user.PasswordHash);
         if (!hashedPassword)
             return Unauthorized();
         
         return Ok(user);
-    }
-
-    [HttpGet("v1/get")]
-    public async Task<IActionResult> Get()
-    {
-        var list = _context.Users.AsNoTracking().ToList();
-        return Ok(list);
     }
 }
