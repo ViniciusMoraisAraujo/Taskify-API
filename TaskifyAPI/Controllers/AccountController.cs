@@ -38,7 +38,7 @@ public class AccountController : ControllerBase
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
         
-        var userResult = new RegisterViewModel(user.Id, user.UserName, user.Email, user.CreateAt);
+        var userResult = new RegisterViewModel(user.Id, user.UserName, user.Email);
 
         return Ok(new ResultViewModel<RegisterViewModel>(true, "User Created!", userResult));
     }
