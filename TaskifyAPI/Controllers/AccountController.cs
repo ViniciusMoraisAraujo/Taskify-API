@@ -4,6 +4,7 @@ using TaskifyAPI.Data;
 using TaskifyAPI.Dtos;
 using TaskifyAPI.Models;
 using TaskifyAPI.Services.Interfaces;
+using TaskifyAPI.Services.TokenService;
 using TaskifyAPI.ViewModels;
 using TaskifyAPI.ViewModels.Accounts;
 
@@ -14,11 +15,13 @@ public class AccountController : ControllerBase
 {
     private readonly TaskyfyDataContext _context;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly ITokenService _tokenService;
 
-    public AccountController(TaskyfyDataContext context, IPasswordHasher passwordHasher)
+    public AccountController(TaskyfyDataContext context, IPasswordHasher passwordHasher,  ITokenService tokenService)
     {
         _context = context;
         _passwordHasher = passwordHasher;
+        _tokenService = tokenService;
     }
 
     [HttpPost("v1/account/register")]
@@ -54,6 +57,8 @@ public class AccountController : ControllerBase
         if (!hashedPassword)
             return Unauthorized();
         
-        return Ok(user);
+        var token = _tokenService.GenerateToken(user);
+        
+        return Ok(token);
     }
 }

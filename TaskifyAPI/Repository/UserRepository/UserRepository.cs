@@ -1,0 +1,46 @@
+﻿using Microsoft.EntityFrameworkCore;
+using TaskifyAPI.Data;
+using TaskifyAPI.Models;
+
+namespace TaskifyAPI.Repository.UserRepository;
+
+public class UserRepository : IUserRepository
+{
+    private readonly TaskyfyDataContext _context;
+
+    public UserRepository(TaskyfyDataContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<bool> ExistsByEmailAsync(string email)
+    {
+        return await _context.Users.AnyAsync(x => x.Email == email);
+    }
+    
+    public async Task CreateUserAsync(User user)
+    {
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteUserAsync(int id)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
+            return;
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task UpdateUserAsync(User user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+    }
+}
