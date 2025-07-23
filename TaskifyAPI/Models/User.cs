@@ -9,6 +9,6 @@ public class User
     public string Email { get; set; }
     public string PasswordHash  { get; set; }
     public List<TaskItem> TaskItem { get; set; } = new List<TaskItem>();
-    public UserRole Role { get; set; } = UserRole.User;
+    public IList<Role> Role { get; set; } 
     public DateTime CreateAt { get; set; } = DateTime.Now;
 }

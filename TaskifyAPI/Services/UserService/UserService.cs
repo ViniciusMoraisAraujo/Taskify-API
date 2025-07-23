@@ -23,8 +23,8 @@ public class UserService : IUserService
 
     public async Task<RegisterViewModel> RegisterUserAsync(UserRegisterDto userRegisterDto)
     {
-        var verification = await _userRepository.ExistsByEmailAsync(userRegisterDto.Email);
-        if (verification)
+        var emailExists = await _userRepository.ExistsByEmailAsync(userRegisterDto.Email);
+        if (emailExists)
             throw new EmailAlreadyExistException();
         
         var passwordHash = _passwordHasher.HashPassword(userRegisterDto.Password);
