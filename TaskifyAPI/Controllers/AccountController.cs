@@ -29,6 +29,6 @@ public class AccountController : ControllerBase
     {
         var result = await _userService.LoginAsync(userLoginDto);
         
-        return Ok(result);
+        return Ok(new ResultViewModel<LoginViewModel>(true, "User Login Success!", result));
     }
 }

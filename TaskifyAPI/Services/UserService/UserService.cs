@@ -44,7 +44,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<string> LoginAsync(UserLoginDto userLoginDto)
+    public async Task<LoginViewModel> LoginAsync(UserLoginDto userLoginDto)
     {
         var user = await _userRepository.GetByEmailAsync(userLoginDto.Email);
         if (user == null)
@@ -56,6 +56,12 @@ public class UserService : IUserService
         
         var token = _tokenService.GenerateToken(user);
 
-        return token;
+        var result = new LoginViewModel
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Token = token
+        };
+        return result;
     }
 }
