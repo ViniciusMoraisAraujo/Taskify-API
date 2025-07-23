@@ -37,6 +37,7 @@ public class ExceptionMiddleware
         {
             ArgumentException => (StatusCodes.Status400BadRequest, "Internal error", "09X0"),
             EmailAlreadyExistException => (StatusCodes.Status409Conflict, "Email already exists", "09X23"),
+            UserNotFoundException => (StatusCodes.Status404NotFound, "User not found", "09X13"),
             UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Internal error ", "09X3"),
             DbUpdateException => (StatusCodes.Status409Conflict, "Internal error - ", "09X4"),
             _ => (StatusCodes.Status500InternalServerError, "Internal error - ", "09X2")

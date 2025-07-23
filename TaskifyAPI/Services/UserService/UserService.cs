@@ -65,4 +65,16 @@ public class UserService : IUserService
         };
         return result;
     }
+
+    public async Task<DeleteUserViewModel> UserDeleteAccountAsync(int id)
+    {
+        var user = await _userRepository.DeleteUserAsync(id);
+        var userDelete = new DeleteUserViewModel
+        {
+            Id = user.Id,
+            Email = user.Email,
+            UserName = user.UserName,
+        };
+        return userDelete;
+    }
 }

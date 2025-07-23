@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskifyAPI.Data;
+using TaskifyAPI.Exceptions;
 using TaskifyAPI.Models;
+using TaskifyAPI.ViewModels.Accounts;
 
 namespace TaskifyAPI.Repository.UserRepository;
 
@@ -25,15 +27,15 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> DeleteUserAsync(int id)
+    public async Task<User> DeleteUserAsync(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         if (user == null)
-            return false;
+            throw new UserNotFoundException(id);
         
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
-        return true;
+        return user;
     }
 
     public async Task<User?> GetByEmailAsync(string email)
