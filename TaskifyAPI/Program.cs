@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskifyAPI.Data;
+using TaskifyAPI.Middlewares;
 using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.Services;
 using TaskifyAPI.Services.PasswordHasher;
@@ -22,7 +23,7 @@ var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();

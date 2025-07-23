@@ -1,4 +1,5 @@
 ﻿using TaskifyAPI.Dtos;
+using TaskifyAPI.Exceptions;
 using TaskifyAPI.Models;
 using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.Services.PasswordHasher;
@@ -24,7 +25,7 @@ public class UserService : IUserService
     {
         var verification = await _userRepository.ExistsByEmailAsync(userRegisterDto.Email);
         if (verification)
-            throw new Exception("Email already exists");
+            throw new EmailAlreadyExistException();
         
         var passwordHash = _passwordHasher.HashPassword(userRegisterDto.Password);
 

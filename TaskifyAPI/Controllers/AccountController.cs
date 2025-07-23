@@ -12,8 +12,8 @@ public class AccountController : ControllerBase
     private readonly IUserService _userService;
 
     public AccountController(IUserService userService)
-    {
-       _userService = userService;
+    { 
+        _userService = userService;
     }
 
     [HttpPost("v1/account/register")]
