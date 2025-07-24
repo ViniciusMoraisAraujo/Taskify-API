@@ -35,8 +35,9 @@ public class TaskItemController : ControllerBase
 
     [HttpPut("v1/tasks/update/{id}")]
     [Authorize]
-    public async Task<IActionResult> UpdateTaskItemAsync([FromRoute]int id)
+    public async Task<IActionResult> UpdateTaskItemAsync([FromRoute]int id,  UpdateTaskItemDto dto)
     {
-        var taskItem = await _taskItemService.GetTaskItemAsync();
+        await _taskItemService.UpdateTaskItemAsync(id, dto);
+        return Ok(new ResultViewModel<UpdateTaskItemViewModel>(true, "taskItem updated"));
     }
 }

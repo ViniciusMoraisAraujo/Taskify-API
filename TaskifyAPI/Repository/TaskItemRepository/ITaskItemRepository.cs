@@ -9,6 +9,6 @@ public interface ITaskItemRepository
     Task DeleteTaskAsync(int id);
     Task<List<TaskItem>> GetTaskAsync(int userId);
     
-    Task<TaskItem> GetTaskByIdAsync( int taskItemId);
+    Task<TaskItem> GetTaskByIdAsync(int taskItemId);
     Task<List<TaskItem>> GetTasksAsync(int userId);
 }

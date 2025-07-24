@@ -8,4 +8,5 @@ public interface ITaskItemService
 {
     Task<CreateTaskItemViewModel> CreateTaskItemAsync(CreateTaskItemDto createTaskItemDto);
     Task<List<TaskItemViewModel>> GetTaskItemAsync();
+    Task<UpdateTaskItemViewModel> UpdateTaskItemAsync(int id, UpdateTaskItemDto updateTaskItemDto);
 }

@@ -4,6 +4,7 @@ using TaskifyAPI.Repository.TaskItemRepository;
 using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.ViewModels.TaskItem;
 using System.Linq;
+using TaskifyAPI.Enums;
 
 namespace TaskifyAPI.Services.TaskItemService;
 
@@ -53,6 +54,25 @@ public class TaskItemService :  ITaskItemService
             Title = t.Title,
             Status = t.Status,
         }).ToList();
+    }
+
+    public async Task<UpdateTaskItemViewModel> UpdateTaskItemAsync(int id,  UpdateTaskItemDto updateTaskItemDto)
+    {
+        var task = await _taskItemRepository.GetTaskByIdAsync(id);
+        if (task == null)
+            throw new Exception("Task not found");
+        
+        task.Status = (StatusTask)updateTaskItemDto.Status;
+        
+        await _taskItemRepository.UpdateTaskAsync(task);
+
+        var result = new UpdateTaskItemViewModel
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Status = task.Status,
+        };
+        return result;
     }
 
     private int GetUserIdFromClaims()
