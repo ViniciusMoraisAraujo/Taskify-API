@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskifyAPI.Data;
 using TaskifyAPI.Middlewares;
+using TaskifyAPI.Repository.TaskItemRepository;
 using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.Services;
 using TaskifyAPI.Services.PasswordHasher;
+using TaskifyAPI.Services.TaskItemService;
 using TaskifyAPI.Services.TokenService;
 using TaskifyAPI.Services.UserService;
 using TaskifyAPI.Validators;
@@ -50,7 +52,9 @@ void ConfigureServices(WebApplicationBuilder applicationBuilder)
     applicationBuilder.Services.AddScoped<ITokenService, TokenService>();//add dependency for token service
     applicationBuilder.Services.AddScoped<IUserRepository, UserRepository>();//add dependency for user repository
     applicationBuilder.Services.AddScoped<IUserService, UserService>();//add dependency for user service
-
+    applicationBuilder.Services.AddScoped<ITaskItemRepository,TaskItemRepository>();//add dependency for taskItem repository
+    applicationBuilder.Services.AddScoped<ITaskItemService,TaskItemService>();//add dependency for taskItem service
+    applicationBuilder.Services.AddHttpContextAccessor();
 }
 
 void ConfigureAuth(WebApplicationBuilder applicationBuilder)

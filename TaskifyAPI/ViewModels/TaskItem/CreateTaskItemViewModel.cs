@@ -8,5 +8,5 @@ public class CreateTaskItemViewModel
     public int Id { get; set; }
     public string Title { get; set; }
     public string userName { get; set; }
-    public StatusTask StatusTask { get; set; }
+    public StatusTask Status { get; set; }
 }
