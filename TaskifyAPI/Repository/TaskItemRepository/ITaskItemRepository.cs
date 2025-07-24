@@ -10,4 +10,5 @@ public interface ITaskItemRepository
     Task<List<TaskItem>> GetTaskAsync(int userId);
     
     Task<TaskItem> GetTaskByIdAsync( int taskItemId);
+    Task<List<TaskItem>> GetTasksAsync(int userId);
 }

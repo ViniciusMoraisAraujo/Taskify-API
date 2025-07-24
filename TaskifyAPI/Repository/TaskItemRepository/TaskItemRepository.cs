@@ -10,9 +10,8 @@ public class TaskItemRepository : ITaskItemRepository
     private readonly TaskyfyDataContext _context;
     
     public TaskItemRepository(TaskyfyDataContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
+
 
     public async Task CreateTaskAsync(TaskItem task)
     {
@@ -51,5 +50,10 @@ public class TaskItemRepository : ITaskItemRepository
             throw new TaskItemNotFoundException(taskItemId);
 
         return taskItem;
+    }
+
+    public async Task<List<TaskItem>> GetTasksAsync(int userId)
+    {
+        return await _context.Tasks.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
     }
 }

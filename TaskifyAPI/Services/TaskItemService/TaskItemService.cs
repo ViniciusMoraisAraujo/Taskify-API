@@ -3,6 +3,7 @@ using TaskifyAPI.Models;
 using TaskifyAPI.Repository.TaskItemRepository;
 using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.ViewModels.TaskItem;
+using System.Linq;
 
 namespace TaskifyAPI.Services.TaskItemService;
 
@@ -21,13 +22,7 @@ public class TaskItemService :  ITaskItemService
     }
     public async Task<CreateTaskItemViewModel> CreateTaskItemAsync(CreateTaskItemDto createTaskItemDto)
     {
-        var userClaims = _httpContextAccessor.HttpContext?.User;
-        var userIdClaim = userClaims?.FindFirst("user_id")?.Value;
-        
-        if (userIdClaim == null)
-            throw new UnauthorizedAccessException("User not authenticate");
-        
-        var userId = int.Parse(userIdClaim);
+        var userId = GetUserIdFromClaims();
         var user = await _userRepository.GetUserByIdAsync(userId);
         
         var taskItem = new TaskItem
@@ -45,5 +40,29 @@ public class TaskItemService :  ITaskItemService
             Status = taskItem.Status,
         };
         return result;
+    }
+
+    public async Task<List<TaskItemViewModel>> GetTaskItemAsync()
+    {
+        var userId = GetUserIdFromClaims();
+        var task = await _taskItemRepository.GetTaskAsync(userId);
+
+        return task.Select(t => new TaskItemViewModel
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Status = t.Status,
+        }).ToList();
+    }
+
+    private int GetUserIdFromClaims()
+    {
+        var userClaims = _httpContextAccessor.HttpContext?.User;
+        var userIdClaim = userClaims?.FindFirst("user_id")?.Value;
+        
+        if (userIdClaim == null)
+            throw new UnauthorizedAccessException("User not authenticate");
+        
+        return int.Parse(userIdClaim);
     }
 }

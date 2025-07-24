@@ -11,9 +11,7 @@ public class UserRepository : IUserRepository
     private readonly TaskyfyDataContext _context;
 
     public UserRepository(TaskyfyDataContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
 
 
     public async Task<bool> ExistsByEmailAsync(string email)

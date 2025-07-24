@@ -18,10 +18,25 @@ public class TaskItemController : ControllerBase
     }
     
     [HttpPost("v1/tasks/create")]
-    [Authorize(Roles = "Admin,User")]
+    [Authorize]
     public async Task<IActionResult> CreateTaskItemAsync(CreateTaskItemDto dto)
     {
         var result = await _taskItemService.CreateTaskItemAsync(dto);
         return Ok(new ResultViewModel<CreateTaskItemViewModel>(true, "taskItem created ",result ));
+    }
+
+    [HttpGet("v1/tasks/get")]
+    [Authorize]
+    public async Task<IActionResult> GetTaskItemAsync()
+    {
+        var taskItem = await _taskItemService.GetTaskItemAsync();
+        return Ok(new ResultViewModel<List<TaskItemViewModel>>(true, "taskItem retrieved", taskItem));
+    }
+
+    [HttpPut("v1/tasks/update/{id}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateTaskItemAsync([FromRoute]int id)
+    {
+        var taskItem = await _taskItemService.GetTaskItemAsync();
     }
 }
