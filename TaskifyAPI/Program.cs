@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -70,6 +71,19 @@ void ConfigureAuth(WebApplicationBuilder applicationBuilder)
                 ValidIssuer = applicationBuilder.Configuration["Jwt:Issuer"],
                 ValidAudience = applicationBuilder.Configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(applicationBuilder.Configuration["Jwt:Key"]))
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnTokenValidated = context =>
+                {
+                    var identity = context.Principal.Identity as ClaimsIdentity;
+                    var userRoleClaim = identity.FindFirst("user_role");
+                   
+                    if (userRoleClaim != null)
+                        identity.AddClaim(new Claim(ClaimTypes.Role, userRoleClaim.Value));
+                    
+                    return Task.CompletedTask;
+                }
             };
         });
     applicationBuilder.Services.AddScoped<ITokenService, TokenService>();

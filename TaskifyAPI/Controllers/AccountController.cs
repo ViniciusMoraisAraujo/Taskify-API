@@ -34,7 +34,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpDelete("v1/account/delete/{id}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAccount([FromRoute] int id)
     {
         var userDelete = await _userService.UserDeleteAccountAsync(id);
