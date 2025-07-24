@@ -12,12 +12,12 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordHasherService _passwordHasherService;
 
-    public UserService(ITokenService tokenService, IPasswordHasher passwordHasher, IUserRepository userRepository)
+    public UserService(ITokenService tokenService, IPasswordHasherService passwordHasherService, IUserRepository userRepository)
     {
         _tokenService = tokenService;
-        _passwordHasher = passwordHasher;
+        _passwordHasherService = passwordHasherService;
         _userRepository = userRepository;
     }
 
@@ -27,7 +27,7 @@ public class UserService : IUserService
         if (emailExists)
             throw new EmailAlreadyExistException();
         
-        var passwordHash = _passwordHasher.HashPassword(userRegisterDto.Password);
+        var passwordHash = _passwordHasherService.HashPassword(userRegisterDto.Password);
 
         var user = new User
         {
@@ -51,7 +51,7 @@ public class UserService : IUserService
         if (user == null)
             throw new Exception("User not found");
         
-        var passwordIsValid = _passwordHasher.VerifyHashedPassword(userLoginDto.Password, user.PasswordHash);
+        var passwordIsValid = _passwordHasherService.VerifyHashedPassword(userLoginDto.Password, user.PasswordHash);
         if (!passwordIsValid)
             throw new Exception("Password is incorrect");
         

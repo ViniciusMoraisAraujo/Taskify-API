@@ -2,7 +2,7 @@
 
 namespace TaskifyAPI.Services.PasswordHasher;
 
-public class PasswordHasher : IPasswordHasher
+public class PasswordHasherService : IPasswordHasherService
 {
     private const int SaltSize = 16;
     private const int HashSize = 32;

@@ -46,7 +46,7 @@ void ConfigureServices(WebApplicationBuilder applicationBuilder)
     applicationBuilder.Services.AddEndpointsApiExplorer();
     applicationBuilder.Services.AddSwaggerGen();//add Swagger
     
-    applicationBuilder.Services.AddScoped<IPasswordHasher, PasswordHasher>();//add dependency for password hash
+    applicationBuilder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();//add dependency for password hash
     applicationBuilder.Services.AddScoped<ITokenService, TokenService>();//add dependency for token service
     applicationBuilder.Services.AddScoped<IUserRepository, UserRepository>();//add dependency for user repository
     applicationBuilder.Services.AddScoped<IUserService, UserService>();//add dependency for user service
