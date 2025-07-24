@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskifyAPI.Data;
 
@@ -12,11 +11,9 @@ using TaskifyAPI.Data;
 namespace TaskifyAPI.Migrations
 {
     [DbContext(typeof(TaskyfyDataContext))]
-    [Migration("20250721174410_fixPasswordHash")]
-    partial class fixPasswordHash
+    partial class TaskyfyDataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,6 +21,20 @@ namespace TaskifyAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("TaskifyAPI.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+                });
 
             modelBuilder.Entity("TaskifyAPI.Models.TaskItem", b =>
                 {
@@ -84,10 +95,6 @@ namespace TaskifyAPI.Migrations
                         .HasColumnType("NVARCHAR(160)")
                         .HasColumnName("PasswordHash");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int")
-                        .HasColumnName("Role");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -102,6 +109,21 @@ namespace TaskifyAPI.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("UserRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRole");
+                });
+
             modelBuilder.Entity("TaskifyAPI.Models.TaskItem", b =>
                 {
                     b.HasOne("TaskifyAPI.Models.User", "User")
@@ -112,6 +134,23 @@ namespace TaskifyAPI.Migrations
                         .HasConstraintName("FK_TaskItem_User");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UserRole", b =>
+                {
+                    b.HasOne("TaskifyAPI.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRole_RoleId");
+
+                    b.HasOne("TaskifyAPI.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRole_UserId");
                 });
 
             modelBuilder.Entity("TaskifyAPI.Models.User", b =>

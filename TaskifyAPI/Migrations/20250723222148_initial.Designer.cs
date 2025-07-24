@@ -12,8 +12,8 @@ using TaskifyAPI.Data;
 namespace TaskifyAPI.Migrations
 {
     [DbContext(typeof(TaskyfyDataContext))]
-    [Migration("20250723203020_FixRoleMap")]
-    partial class FixRoleMap
+    [Migration("20250723222148_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,10 +28,7 @@ namespace TaskifyAPI.Migrations
             modelBuilder.Entity("TaskifyAPI.Models.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -39,19 +36,7 @@ namespace TaskifyAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "User"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Admin"
-                        });
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("TaskifyAPI.Models.TaskItem", b =>

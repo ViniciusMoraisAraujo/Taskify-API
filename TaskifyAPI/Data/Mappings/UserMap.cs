@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskifyAPI.Migrations;
 using TaskifyAPI.Models;
 
 namespace TaskifyAPI.Data.Mappings;

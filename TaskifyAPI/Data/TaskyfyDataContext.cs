@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskifyAPI.Data.Mappings;
-using TaskifyAPI.Migrations;
 using TaskifyAPI.Models;
 
 namespace TaskifyAPI.Data;
@@ -20,10 +19,6 @@ public class TaskyfyDataContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new UserMap());
         modelBuilder.ApplyConfiguration(new TaskItemMap());
-        
-        modelBuilder.Entity<Role>().HasData(
-            new Role() { Id = 1, Name = "User"},
-            new Role() { Id = 2, Name = "Admin"}
-            );
+        modelBuilder.ApplyConfiguration(new RoleMap());
     }
 }
