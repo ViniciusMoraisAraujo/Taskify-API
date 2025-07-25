@@ -5,6 +5,7 @@ using TaskifyAPI.Repository.UserRepository;
 using TaskifyAPI.ViewModels.TaskItem;
 using System.Linq;
 using TaskifyAPI.Enums;
+using TaskifyAPI.ViewModels;
 
 namespace TaskifyAPI.Services.TaskItemService;
 
@@ -73,6 +74,11 @@ public class TaskItemService :  ITaskItemService
             Status = task.Status,
         };
         return result;
+    }
+
+    public async Task DeleteTaskItemAsync(int id)
+    {
+        await _taskItemRepository.DeleteTaskAsync(id);
     }
 
     private int GetUserIdFromClaims()
